@@ -1,23 +1,28 @@
 import pygame as p
+# get it from cmd by "pip install pygame"
 import time as tm
 import math as m
+#User Inputs for projectile
 ang=int(input("Enter angle:"))
 pw=int(input("Enter liftoff power(1-300):"))
 g=int(input("Enter g:"))
 F=int(input("Enter air friction(0-10):"))
 th=int(input("Enter thrust(0,10):"))
+#initial values of variables
 F/=40
 hv=m.cos((m.pi)*ang/180)*pw
 vv=m.sin((m.pi)*ang/180)*pw
 hype=(vv*vv+hv*hv)**0.5
 Hth=hv*th/hype
 Vth=vv*th/hype
+#pygame window setup and image loading
 win=p.display.set_mode((1500,750))
 Ball=p.image.load('Ball2.jpg')
 ball=[]
 Build=p.image.load('building.jpg')
 build=[]
 n=0
+#preloading of scaled images to zoom out in animation
 for i in range(0,600):
     ball.append(p.transform.scale(Ball,(100*(1-i*0.0015),100*(1-i*0.0015))))
     build.append(p.transform.scale(Build,(300*(1-i*0.0015),500*(1-i*0.0015))))
@@ -27,6 +32,7 @@ T=1/60
 global coor,z
 coor=[]
 z=1
+#Frame update function
 def update():
     win.fill((255,255,255))
     win.blit(build[n],(z*1000,750-(450*z)))
@@ -37,6 +43,7 @@ def update():
 update()
 run=True
 tm.sleep(4)
+#process
 while(run):
      coor.append([x+50,y+50])
      y-=T*(vv-((g+(F*vv)-Vth)*T/2))
